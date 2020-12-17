@@ -1,13 +1,15 @@
 var app = require('express')();
 var server = require('http').createServer(app);
-var io = require('socket.io')(server);
+var io = require('socket.io');
 var cors = require('cors');
 
 app.use(cors())
-io.origins('*:*')
+var sio_server = io(server, {
+  origins: 'https://tictactoebyprasad.web.app',
+});
 const users = [];
 const port = process.env.PORT || 5000
-io.on('connection', (socket) => {
+sio_server.on('connection', (socket) => {
   console.log('a user connected');
 
   socket.on('join', ({ name, room }) => {
@@ -28,7 +30,7 @@ io.on('connection', (socket) => {
     console.log(otheruser)
     if (userinroom === 2) {
       console.log('Connedcted')
-      io.to(room).emit('allconnected', otheruser)
+      sio_server.to(room).emit('allconnected', otheruser)
     }
     console.log(usersinroom)
     if (usersinroom[0].id == socket.id) {
@@ -45,10 +47,6 @@ io.on('connection', (socket) => {
   socket.on('winner', () => {
     const user = users.find((user) => user.id === socket.id);
 
-
-
-
-    
     socket.broadcast.to(user.room).emit('oppwinner')
     console.log(users)
   })
