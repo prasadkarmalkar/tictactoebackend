@@ -4,7 +4,7 @@ var io = require('socket.io')(server);
 var cors = require('cors');
 
 app.use(cors())
-
+io.origins('*:*')
 const users = [];
 const port = process.env.PORT || 5000
 io.on('connection', (socket) => {
