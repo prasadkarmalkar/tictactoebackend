@@ -26,6 +26,7 @@ io.on('connection', (socket) => {
     console.log("Welcome : " + name)
     users.push({ 'id': socket.id, name, room });
     socket.join(room)
+    socket.emit('welcome',{'id':socket.id})
     var userinroom = 0;
     var usersinroom = [];
     users.forEach(user => {
@@ -36,12 +37,24 @@ io.on('connection', (socket) => {
     })
     // const userinroom = users.filter((user)=>{user.room == room})
     console.log(userinroom)
-    
-    console.log(otheruser)
+   
     if (userinroom === 2) {
-      console.log('Connedcted')
-      var otheruser = usersinroom.find((user) => user.id !== socket.id);
-      io.to(room).emit('allconnected', otheruser)
+      var other;
+      if(usersinroom[0].id!== socket.id){
+        socket.emit("otheruser",{'othername':usersinroom[0].name})
+      }else{
+        socket.emit("otheruser",{'othername':userinroom[1].name})
+      }
+      if(usersinroom[0].id=== socket.id){
+        socket.to(room).emit("otheruser", {'othername':usersinroom[0].name});
+      
+      }else{
+        socket.to(room).emit("otheruser", {'othername':usersinroom[1].name});
+      }
+    
+
+      io.to(room).emit('allconnected', usersinroom)
+      
     }
     console.log(usersinroom)
     if (usersinroom[0].id == socket.id) {
