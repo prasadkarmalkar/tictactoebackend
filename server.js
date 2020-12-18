@@ -1,16 +1,18 @@
 var app = require('express')();
 var server = require('http').createServer(app);
-var io = require('socket.io')(server,{
-  cors: {
-    origin: "https://tictactoebyprasad.web.app/",
-    methods: ["GET", "POST"],
-    allowedHeaders: ["my-custom-header"],
-    credentials: true
-  }
-});
-var cors = require('cors');
+ var io = require('socket.io')(server
+//,{
+//   cors: {
+//     origin: "http://localhost:3000/",
+//     methods: ["GET", "POST"],
+//     allowedHeaders: ["Access-Control-Allow-Origin"],
+//     credentials: true
+//   }
+// }
+);
 
-app.use(cors())
+
+
 
 const users = [];
 const port = process.env.PORT || 5000
