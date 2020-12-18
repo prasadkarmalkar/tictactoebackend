@@ -36,10 +36,11 @@ io.on('connection', (socket) => {
     })
     // const userinroom = users.filter((user)=>{user.room == room})
     console.log(userinroom)
-    var otheruser = users.find((user) => user.id !== socket.id);
+    
     console.log(otheruser)
     if (userinroom === 2) {
       console.log('Connedcted')
+      var otheruser = usersinroom.find((user) => user.id !== socket.id);
       io.to(room).emit('allconnected', otheruser)
     }
     console.log(usersinroom)
